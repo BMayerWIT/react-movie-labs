@@ -23,20 +23,30 @@ const FavoriteMoviesPage = () => {
   const isLoading = favoriteMovieQueries.find((m) => m.isLoading === true);
 
   if (isLoading) {
-    return (
-      <PageTemplate
-        title="Favorite Movies"
-        movies={movies}
-        action={(movie) => {
-          return (
-            <>
-              <RemoveFromFavorites movie={movie} />
-              <WriteReview movie={movie} />
-            </>
-          );
-        }}
-      />
-    );
+    return <Spinner />;
+  }
+
+  const movies = favoriteMovieQueries.map((q) => {
+    q.data.genre_ids = q.data.genres.map(g => g.id)
+    return q.data
+  });
+
+  const toDo = () => true;
+
+  return (
+    <PageTemplate
+      title="Favorite Movies"
+      movies={movies}
+      action={(movie) => {
+        return (
+          <>
+            <RemoveFromFavorites movie={movie} />
+            <WriteReview movie={movie} />
+          </>
+        );
+      }}
+    />
+  );
 };
 
 export default FavoriteMoviesPage;
